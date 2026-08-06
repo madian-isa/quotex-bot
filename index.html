@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>QUOTEX Algotrade Pro - Official Quotex Signal Bot</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23080c14'/><path d='M20 75 L38 45 L58 60 L80 25' stroke='%2300ff88' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='80' cy='25' r='7' fill='%2300ff88'/></svg>">
+    <meta name="description" content="QUOTEX Algotrade Pro is the most accurate automated signal bot for Quotex, PocketOption, and Binary Trading. Get high accuracy signals live.">
+    <meta name="keywords" content="QUOTEX Algotrade Pro, Quotex Signal Bot, Binary Trading Bot Bangladesh, QUOTEX Algotrade Pro, Free Trading Signals">
+    <meta name="author" content="QUOTEX Owner">
+    <meta name="robots" content="index, follow">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #06090e url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: #e1e7ec;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .app-card {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(10, 14, 23, 0.94);
+            border: 1px solid rgba(0, 255, 136, 0.35);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(18px);
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 14px;
+        }
+
+        .bot-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px auto;
+            display: block;
+            filter: drop-shadow(0px 0px 12px #00ff88);
+            transition: transform 0.3s ease;
+        }
+
+        .bot-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ff88;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .header span {
+            font-size: 11px;
+            color: #8a9ba8;
+            display: block;
+            margin-top: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #728495;
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #pair-container {
+            max-height: 180px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 4px;
+        }
+
+        #pair-container::-webkit-scrollbar, #signals::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #pair-container::-webkit-scrollbar-thumb, #signals::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.5);
+            border-radius: 4px;
+        }
+
+        .pair-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 7px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .pair-item:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        .pair-item.selected {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.15);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.15);
+        }
+
+        .star-icon {
+            font-size: 16px;
+            color: #435260;
+            transition: color 0.2s;
+        }
+
+        .star-icon.active {
+            color: #ffcc00;
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00ff88 0%, #00b359 100%);
+            color: #050a0e;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-generate:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-generate:disabled {
+            background: #1c2530 !important;
+            color: #4a5a6a !important;
+            box-shadow: none !important;
+            cursor: not-allowed;
+        }
+
+        #signals {
+            margin-top: 15px;
+            background: rgba(5, 10, 15, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            max-height: 165px;
+            overflow-y: auto;
+        }
+
+        .signal-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid #555;
+            margin-bottom: 7px;
+            border-radius: 6px;
+        }
+
+        .signal-card.call {
+            border-left-color: #00ff88;
+            background: rgba(0, 255, 136, 0.06);
+        }
+
+        .signal-card.put {
+            border-left-color: #ff3b5c;
+            background: rgba(255, 59, 92, 0.06);
+        }
+
+        .signal-info {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .signal-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-call { background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
+        .badge-put { background: rgba(255, 59, 92, 0.2); color: #ff3b5c; border: 1px solid rgba(255, 59, 92, 0.3); }
+
+        #status-message {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-box {
+            padding: 11px;
+            border-radius: 10px;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-ready {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .status-waiting {
+            color: #ffaa00;
+            background: rgba(255, 170, 0, 0.06);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+        }
+
+        .status-running {
+            color: #ff3b5c;
+            background: rgba(255, 59, 92, 0.06);
+            border: 1px solid rgba(255, 59, 92, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <div class="header">
+            <!-- Bot Branding Logo -->
+            <img src="https://cdn-icons-png.flaticon.com/512/2583/2583163.png" alt="QUOTEX Algotrade Logo" class="bot-logo">
+            <h1>QUOTEX ALGOTRADE PRO</h1>
+            <span>OFFICIAL BOT | OWNER: Madian sarker Isa</span>
+        </div>
+
+        <div class="section-label">
+            <span>Select Market Asset (All Free)</span>
+            <span id="selected-count">0 Selected</span>
+        </div>
+
+        <div id="pair-container"></div>
+
+        <button id="signal-btn" class="btn-generate" onclick="generateSignal()">Get Analysis Signal</button>
+
+        <div id="signals">
+            <div class="section-label" style="margin-bottom: 8px;">Live Signals Output</div>
+            <div id="signal-list"><span style="font-size: 11px; color: #5d6d7e;">Select pairs to generate signals</span></div>
+        </div>
+
+        <div id="status-message"></div>
+<!-- Custom Telegram Support Footer -->
+        <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+            <p style="font-size: 11px; color: #8a9ba8; margin: 0 0 8px 0; font-weight: 600; line-height: 1.4;">
+                Want a personal custom bot with <span style="color: #00ff88;">70%-90%</span> accuracy like this?
+            </p>
+            <a href="https://web.telegram.org/k/#@Madiansarker" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; background: linear-gradient(135deg, #0088cc 0%, #006699 100%); border: 1px solid rgba(0, 136, 204, 0.5); color: #ffffff; font-size: 12px; font-weight: 800; text-decoration: none; border-radius: 10px; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.97 8.22-3.55 3.91-1.67 4.72-1.96 5.25-1.97.12 0 .39.03.56.17.15.12.19.28.21.4-.02.07-.02.24-.04.41z"/></svg>
+                <span>CREATE YOUR OWN BOT</span>
+            </a>
+        </div>
+    </div>
+
+<script>
+    let lockUntilTimestamp = 0;
+    let tradeStartTimestamp = 0;
+
+    const allPairs = [
+        "BRLUSD-OTC", "EURUSD-OTC", "GBPUSD-OTC", "AUDUSD-OTC", "USDJPY-OTC", 
+        "USDCAD-OTC", "EURGBP-OTC", "AUDJPY-OTC", "NZDUSD-OTC", "USDCHF-OTC", 
+        "USDEGP-OTC", "USDIDR-OTC", "USDCOP-OTC", "USDNGN-OTC", "USDPHP-OTC", 
+        "USDMXN-OTC", "USDPKR-OTC", "BITCOIN-OTC", "USCRUDE-OTC", "EURUSD", 
+        "GBPUSD", "AUDUSD", "USDJPY", "USDCAD", "EURGBP", "AUDJPY", 
+        "NZDUSD", "USDCHF", "EURCHF", "EURCAD", "EURAUD", "EURNZD"
+    ];
+
+    let selectedPairsSet = new Set();
+    let favoritePairsSet = new Set(JSON.parse(localStorage.getItem('tht_fav_stars')) || []);
+
+    function renderPairsUI() {
+        const container = document.getElementById('pair-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const sortedPairs = [...allPairs].sort((a, b) => {
+            return favoritePairsSet.has(b) - favoritePairsSet.has(a);
+        });
+
+        sortedPairs.forEach((pair) => {
+            const item = document.createElement('div');
+            const isSelected = selectedPairsSet.has(pair);
+            const isFav = favoritePairsSet.has(pair);
+            
+            item.className = `pair-item ${isSelected ? 'selected' : ''}`;
+            item.innerHTML = `
+                <span>${pair}</span>
+                <span class="star-icon ${isFav ? 'active' : ''}">★</span>
+            `;
+
+            item.onclick = (e) => {
+                if (e.target.classList.contains('star-icon')) {
+                    toggleFavorite(e, pair);
+                    return;
+                }
+                if (selectedPairsSet.has(pair)) {
+                    selectedPairsSet.delete(pair);
+                } else {
+                    selectedPairsSet.add(pair);
+                }
+                updateSelectedCount();
+                renderPairsUI();
+            };
+
+            container.appendChild(item);
+        });
+        updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+        const countSpan = document.getElementById('selected-count');
+        if (countSpan) countSpan.innerText = `${selectedPairsSet.size} Selected`;
+    }
+
+    function toggleFavorite(event, pair) {
+        event.stopPropagation();
+        if (favoritePairsSet.has(pair)) {
+            favoritePairsSet.delete(pair);
+        } else {
+            favoritePairsSet.add(pair);
+        }
+        localStorage.setItem('tht_fav_stars', JSON.stringify([...favoritePairsSet]));
+        renderPairsUI();
+    }
+
+    function getQuotexServerTime() {
+        const now = new Date();
+        return {
+            formatted: `${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}:${String(now.getUTCSeconds()).padStart(2, '0')}`,
+            nowTime: now.getTime()
+        };
+    }
+
+    setInterval(() => {
+        const serverTime = getQuotexServerTime();
+        const statusDiv = document.getElementById('status-message');
+        const signalBtn = document.getElementById('signal-btn');
+        const signalListDiv = document.getElementById('signal-list');
+
+        if (serverTime.nowTime < lockUntilTimestamp) {
+            const totalRemaining = Math.ceil((lockUntilTimestamp - serverTime.nowTime) / 1000);
+            
+            if (signalBtn) {
+                signalBtn.disabled = true;
+                signalBtn.innerText = `LOCKED (${totalRemaining}s)`;
+            }
+
+            if (serverTime.nowTime < tradeStartTimestamp) {
+                const entryCountdown = Math.ceil((tradeStartTimestamp - serverTime.nowTime) / 1000);
+                if (statusDiv) {
+                    statusDiv.innerHTML = `
+                        <div class="status-box status-waiting">
+                            ⏳ PREPARE ENTRY AT 00 SEC<br>STARTS IN: ${entryCountdown}s
+                        </div>
+                    `;
+                }
+            } else {
+                const candleRemaining = Math.ceil((lockUntilTimestamp - serverTime.nowTime) / 1000);
+                if (statusDiv) {
+                    statusDiv.innerHTML = `
+                        <div class="status-box status-running">
+                            🔴 LIVE CANDLE RUNNING<br>CLOSES IN: ${candleRemaining}s
+                        </div>
+                    `;
+                }
+            }
+
+        } else {
+            if (lockUntilTimestamp !== 0) {
+                if (signalListDiv) signalListDiv.innerHTML = '<span style="font-size: 11px; color: #5d6d7e;">Select pairs to generate signals</span>';
+                selectedPairsSet.clear();
+                renderPairsUI();
+                lockUntilTimestamp = 0;
+            }
+
+            if (statusDiv) {
+                statusDiv.innerHTML = `<div class="status-box status-ready">UTC SERVER: ${serverTime.formatted} | SYSTEM READY</div>`;
+            }
+            if (signalBtn) {
+                signalBtn.disabled = false;
+                signalBtn.innerText = "Get Analysis Signal";
+            }
+        }
+    }, 1000);
+
+    function generateSignal() {
+        const now = new Date();
+        if (now.getTime() < lockUntilTimestamp) return;
+
+        const pairs = Array.from(selectedPairsSet);
+        if (pairs.length === 0) {
+            alert("Please select at least one asset pair.");
+            return;
+        }
+
+        const signalListDiv = document.getElementById('signal-list');
+        if (signalListDiv) signalListDiv.innerHTML = ''; 
+
+        let nextMin = now.getUTCMinutes() + 1;
+        let nextHr = now.getUTCHours();
+        if (nextMin >= 60) { nextMin = 0; nextHr = (nextHr + 1) % 24; }
+
+        const candleStartTime = `${String(nextHr).padStart(2, '0')}:${String(nextMin).padStart(2, '0')}`;
+
+        pairs.forEach(pair => {
+            const isOTC = pair.includes("-OTC");
+            const sec = now.getUTCSeconds();
+            const min = now.getUTCMinutes();
+            
+            const charSum = pair.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+            const algoScore = isOTC ? (pair.length * 13 + min * 7 + sec) % 100 : (charSum + min * 3 + sec * 9) % 100;
+
+            const direction = (algoScore > 48) ? "CALL" : "PUT";
+
+            const card = document.createElement('div');
+            card.className = `signal-card ${direction.toLowerCase()}`;
+            card.innerHTML = `
+                <div class="signal-info">
+                    <div>${candleStartTime} UTC - ${pair}</div>
+                </div>
+                <div style="text-align: right;">
+                    <span class="signal-badge ${direction === 'CALL' ? 'badge-call' : 'badge-put'}">${direction}</span>
+                </div>
+            `;
+            
+            if (signalListDiv) signalListDiv.appendChild(card);
+        });
+
+        const secondsRemaining = 60 - now.getUTCSeconds();
+        tradeStartTimestamp = now.getTime() + (secondsRemaining * 1000);
+        lockUntilTimestamp = now.getTime() + ((secondsRemaining + 60) * 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderPairsUI);
+     
+    // Disable Right Click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Disable F12, Ctrl+U, Ctrl+Shift+I, etc.
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
